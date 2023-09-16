@@ -1,9 +1,9 @@
-import mongoose from 'mongoose'
+// import Flight from '../models/flight.js'
 
-const db = mongoose.connection
+function index(req, res) {
+  res.render('flights/index')
+}
 
-mongoose.connect(process.env.DATABASE_URL)
-	
-db.on('connected', function() {
-  console.log(`Connected to MongoDB ${db.name} at ${db.host}:${db.port}`)
-})
+import {
+  index,
+}
