@@ -15,6 +15,10 @@ import { router as flightsRouter } from './routes/flights.js'
 const app = express()
 
 // view engine setup
+app.set(
+  'views',
+  path.join(path.dirname(fileURLToPath(import.meta.url)), 'views')
+)
 app.set('view engine', 'ejs')
 
 // basic middleware
