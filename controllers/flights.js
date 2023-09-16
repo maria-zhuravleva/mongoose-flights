@@ -14,6 +14,41 @@ function index(req, res) {
   })
 }
 
+function newFlight(req, res){
+  res.render('flights/new', {
+    title: 'Add Flight'
+  })
+}
+
+function create(req, res){
+  Flight.create(req.body)
+  .then(flight => {
+    console.log(flight)
+    res.redirect('/flights')
+  })
+  .catch(error => {
+    console.log(error)
+    res.redirect('/flights')
+  })
+}
+
+function show(req, res){
+  Flight.findById(req.params.flightId)
+  .then(flight => {
+    res.render('flights/show', {
+      title: 'Flight Details',
+      flight: flight
+    })
+  })
+  .catch(error => {
+    console.log(error)
+    res.redirect('/flights')
+  })
+}
+
 export {
   index,
+  newFlight as new,
+  create,
+  show,
 }

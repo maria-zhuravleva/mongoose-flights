@@ -1,5 +1,5 @@
 <%- include('../partials/html-head') %>
-<link rel="stylesheet" href="/stylesheets/flights/index.css" />
+<link rel="stylesheet" href="/public/flights/index.css" />
 <%- include('../partials/nav') %>
 
 <main>
@@ -10,17 +10,18 @@
         <th>Airline</th>
         <th>Airport</th>
         <th>Flight Number</th>
-        <th>Departs</th>
+        <th>Departures</th>
       </tr>
     </thead>
     <tbody>
       
       <% flights.forEach(flight => { %>
         <tr>
-          <td><%= movie.airline %></td>
-          <td><%= movie.airport %></td>
-          <td><%= movie.flightNo %></td>
-          <td><%= movie.departs %></td>
+          <td><%= flight.airline %></td>
+          <td><%= flight.airport %></td>
+          <td> <a href="/flights/<%= flight._id %>">DETAILS</a></td>
+          <!-- <td><%= flight.flightNo %></td>
+          <td><%= flight.departs %></td> -->
         </tr>     
       <% }) %>
     </tbody>
