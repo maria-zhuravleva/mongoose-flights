@@ -8,14 +8,14 @@
     <!-- <div>Title: </div>
     <div>
       <%# movie.title %> 
-      <a href="/movies/<%# movie._id %>/edit">
-        <button>Edit Movie</button>
-      </a>
     </div>  -->
-
+    
     <div>Airline: </div>
     <div>
       <%= flight.airline %>
+      <a href="/flights/<%= flight._id %>/edit">
+        <button>Edit Flight</button>
+      </a>
     </div>
     <div>Airport: </div>
     <div><%= flight.airport %></div>
