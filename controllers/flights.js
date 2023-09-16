@@ -1,9 +1,18 @@
-// import Flight from '../models/flight.js'
+import { Flight } from '../models/flight.js'
 
 function index(req, res) {
-  res.render('flights/index')
+  Flight.find({})
+  .then (flights => {
+    res.render('flights/index', {
+      flights
+    })
+  })
+  .catch(error => {
+    console.log(error)
+    res.redirect('/flights')
+  })
 }
 
-import {
+export {
   index,
 }
