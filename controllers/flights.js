@@ -117,6 +117,35 @@ function createTicket(req, res) {
   })
 }
 
+function deleteTicket(req, res) {
+  console.log('Flight ID:', req.params.flightId)
+  console.log('Ticket ID:', req.params.ticketId)
+  Flight.findById(req.params.flightId)
+  .then(flight => {
+    const ticketIdx = flight.tickets.findIndex(ticket => ticket._id === req.params.ticketId)
+    console.log('Ticket idx:', ticketIdx)
+    if (ticketIdx !== -1) {
+      flight.tickets.splice(ticketIdx, 1)
+      flight.save()
+      .then(() => {
+        console.log('Ticket deleted successfully')
+        res.redirect(`/flights/${flight._id}`)
+      })
+      .catch(error => {
+        console.log('Error saving flight:', error)
+        res.redirect('/flights')
+      })
+    } else {
+      console.log('Ticket not found')
+      res.redirect(`/flights/${flight._id}`)
+    }
+  })
+  .catch(error => {
+    console.log('Error finding flight:', error)
+    res.redirect('/flights')
+  })
+}
+
 export {
   index,
   newFlight as new,
@@ -125,5 +154,6 @@ export {
   deleteFlight as delete,
   edit,
   update,
-  createTicket
+  createTicket,
+  deleteTicket
 }
