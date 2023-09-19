@@ -13,31 +13,16 @@ function index(req, res) {
     res.redirect('/flights')
   })
 }
-// dosn't work 1
-// const currentDate = new Date
-// for (let key in req.body) {
-//   if (key === departs && req.body[key] < currentDate) {
-//     req.body[key]
-//   } 
-// }
-// dosn't work 2
-// flights.forEach(flight => {
-//   const departs = flight.departs
-//   if (departs < currentDate) {
-//     flight.classList.add('red')
-//   }
-// })
 
 function newFlight(req, res){
   const newFlight = new Flight();
-// Obtain the default date
-  const dt = newFlight.departs;
-// Format the date for the value attribute of the input
-  const departsDate = dt.toISOString().slice(0, 16);
+  const dt = newFlight.departs
+  const departsDate = dt.toISOString().slice(0, 16)
   Flight.find({})
   .then(flights => {
     res.render('flights/new', {
-      flight: departsDate,
+      flights,
+      departsDate: departsDate,
       title: 'Add Flight'
     })
   })
@@ -90,7 +75,10 @@ function deleteFlight(req, res){
 function edit(req, res){
   Flight.findById(req.params.flightId)
   .then (flight => {
+    const departsDate = flight.departs.toISOString().substring(0, 10)
     res.render('flights/edit', {
+      flight,
+      departsDate: departsDate,
       title: 'Edit Flight'
     })
   })

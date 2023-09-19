@@ -5,10 +5,10 @@ const router = Router()
 
 router.get('/', flightsCtrl.index)
 router.get('/new', flightsCtrl.new)
-router.get('/:flightId', flightsCtrl.show)
-router.get('/:flightId/edit', flightsCtrl.edit)
 router.post('/', flightsCtrl.create)
+router.get('/:flightId', flightsCtrl.show)
 router.delete('/:flightId', flightsCtrl.delete)
+router.get('/:flightId/edit', flightsCtrl.edit)
 router.put('/:movieId', flightsCtrl.update)
 
 export { router }
