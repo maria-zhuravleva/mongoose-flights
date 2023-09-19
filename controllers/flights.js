@@ -1,4 +1,5 @@
 import { Flight } from '../models/flight.js'
+import { Meal } from '../models/meal.js'
 
 function index(req, res) {
   Flight.find({}).sort({departs: 1})
@@ -39,7 +40,7 @@ function create(req, res){
   Flight.create(req.body)
   .then(flight => {
     console.log(flight)
-    res.redirect('/flights')
+    res.redirect(`/flights/${flight._id}`)
   })
   .catch(error => {
     console.log(error)
@@ -49,10 +50,15 @@ function create(req, res){
 
 function show(req, res){
   Flight.findById(req.params.flightId)
+  .populate('meals')
   .then(flight => {
-    res.render('flights/show', {
-      title: 'Flight Details',
-      flight: flight
+    Meal.find({_id: {$nin: flight.meals}})
+    .then(meals => {
+      res.render('flights/show', {
+        title: 'Flight Details',
+        flight: flight,
+        meals: meals
+      })
     })
   })
   .catch(error => {
@@ -118,31 +124,58 @@ function createTicket(req, res) {
 }
 
 function deleteTicket(req, res) {
-  console.log('Flight ID:', req.params.flightId)
-  console.log('Ticket ID:', req.params.ticketId)
   Flight.findById(req.params.flightId)
   .then(flight => {
-    const ticketIdx = flight.tickets.findIndex(ticket => ticket._id === req.params.ticketId)
-    console.log('Ticket idx:', ticketIdx)
-    if (ticketIdx !== -1) {
-      flight.tickets.splice(ticketIdx, 1)
-      flight.save()
-      .then(() => {
-        console.log('Ticket deleted successfully')
-        res.redirect(`/flights/${flight._id}`)
-      })
-      .catch(error => {
-        console.log('Error saving flight:', error)
-        res.redirect('/flights')
-      })
-    } else {
-      console.log('Ticket not found')
+    flight.tickets.id(req.params.ticketId).deleteOne()
+    flight.save()
+    .then(() => {
       res.redirect(`/flights/${flight._id}`)
-    }
+    })
   })
   .catch(error => {
     console.log('Error finding flight:', error)
     res.redirect('/flights')
+  })
+  }
+  // console.log('Flight ID:', req.params.flightId)
+  // console.log('Ticket ID:', req.params.ticketId)
+  // Flight.findById(req.params.flightId)
+  // .then(flight => {
+  //   const ticketIdx = flight.tickets.findIndex(ticket => ticket._id === req.params.ticketId)
+  //   console.log('Ticket idx:', ticketIdx)
+  //   if (ticketIdx !== -1) {
+  //     flight.tickets.splice(ticketIdx, 1)
+  //     flight.save()
+  //     .then(() => {
+  //       console.log('Ticket deleted successfully')
+  //       res.redirect(`/flights/${flight._id}`)
+  //     })
+  //     .catch(error => {
+  //       console.log('Error saving flight:', error)
+  //       res.redirect('/flights')
+  //     })
+  //   } else {
+  //     console.log('Ticket not found')
+  //     res.redirect(`/flights/${flight._id}`)
+  //   }
+
+function addToMeal(req, res) {
+  // find the movie
+  Flight.findById(req.params.flightId)
+  .then(flight => {
+    flight.meals.push(req.body.mealId)
+    flight.save()
+		.then(() => {
+      res.redirect(`/flights/${flight._id}`)
+		})
+    .catch(err => {
+      console.log(err)
+      res.redirect("/flights")
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    res.redirect("/flights")
   })
 }
 
@@ -155,5 +188,6 @@ export {
   edit,
   update,
   createTicket,
-  deleteTicket
+  deleteTicket,
+  addToMeal
 }

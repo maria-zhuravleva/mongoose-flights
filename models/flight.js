@@ -10,8 +10,7 @@ const ticketSchema = new Schema({
   price: {
     type: Number,
     min: 0
-  },
-  meals: [{type: Schema.Types.ObjectId, ref: 'Meal'}]
+  }
 }, {
   timestamps: true
 })
@@ -39,7 +38,8 @@ const flightSchema = new Schema({
       return defaultDate
     }
   },
-  tickets: [ticketSchema]
+  tickets: [ticketSchema],
+  meals: [{type: Schema.Types.ObjectId, ref: 'Meal'}]
 }, {
   timestamps: true
 })
