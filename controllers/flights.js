@@ -137,27 +137,6 @@ function deleteTicket(req, res) {
     res.redirect('/flights')
   })
   }
-  // console.log('Flight ID:', req.params.flightId)
-  // console.log('Ticket ID:', req.params.ticketId)
-  // Flight.findById(req.params.flightId)
-  // .then(flight => {
-  //   const ticketIdx = flight.tickets.findIndex(ticket => ticket._id === req.params.ticketId)
-  //   console.log('Ticket idx:', ticketIdx)
-  //   if (ticketIdx !== -1) {
-  //     flight.tickets.splice(ticketIdx, 1)
-  //     flight.save()
-  //     .then(() => {
-  //       console.log('Ticket deleted successfully')
-  //       res.redirect(`/flights/${flight._id}`)
-  //     })
-  //     .catch(error => {
-  //       console.log('Error saving flight:', error)
-  //       res.redirect('/flights')
-  //     })
-  //   } else {
-  //     console.log('Ticket not found')
-  //     res.redirect(`/flights/${flight._id}`)
-  //   }
 
 function addToMeal(req, res) {
   // find the movie
@@ -179,6 +158,40 @@ function addToMeal(req, res) {
   })
 }
 
+function deleteMeal(req, res){
+  Flight.findByIdAndUpdate(req.params.flightId, {
+    $pull: { meals: req.params.mealId }
+  })
+  .then(() => {
+    res.redirect(`/flights/${req.params.flightId}`);
+  })
+  .catch(error => {
+    console.log('Error finding flight:', error);
+    res.redirect('/flights');
+  });
+}
+
+// function deleteMeal(req, res){
+//   Flight.findById(req.params.flightId)
+//   .populate()
+//   .then(flight => {
+//     flight.meals.id(req.params.mealId).remove()
+//     flight.save()
+//     .then(() => {
+//       res.redirect(`/flights/${flight._id}`)
+//     })
+//     .catch(error => {
+//       console.log('Error finding flight:', error)
+//       res.redirect(`/flights/${flight._id}`)
+//     })
+//   })
+//   .catch(error => {
+//     console.log('Error finding flight:', error)
+//     res.redirect('/flights')
+//   })
+// }
+
+
 export {
   index,
   newFlight as new,
@@ -189,5 +202,6 @@ export {
   update,
   createTicket,
   deleteTicket,
-  addToMeal
+  addToMeal,
+  deleteMeal
 }
