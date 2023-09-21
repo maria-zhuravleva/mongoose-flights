@@ -139,7 +139,6 @@ function deleteTicket(req, res) {
   }
 
 function addToMeal(req, res) {
-  // find the movie
   Flight.findById(req.params.flightId)
   .then(flight => {
     flight.meals.push(req.body.mealId)
@@ -170,27 +169,6 @@ function deleteMeal(req, res){
     res.redirect('/flights');
   });
 }
-
-// function deleteMeal(req, res){
-//   Flight.findById(req.params.flightId)
-//   .populate()
-//   .then(flight => {
-//     flight.meals.id(req.params.mealId).remove()
-//     flight.save()
-//     .then(() => {
-//       res.redirect(`/flights/${flight._id}`)
-//     })
-//     .catch(error => {
-//       console.log('Error finding flight:', error)
-//       res.redirect(`/flights/${flight._id}`)
-//     })
-//   })
-//   .catch(error => {
-//     console.log('Error finding flight:', error)
-//     res.redirect('/flights')
-//   })
-// }
-
 
 export {
   index,

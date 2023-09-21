@@ -21,7 +21,6 @@
           <td><%= flight.airline %></td>
           <td><%= flight.airport %></td>
           <td><%= flight.flightNo %></td>
-          <!-- <td class="<%# flight.departs < currentDate ? 'red' : ''%>"> -->
             <% const isExpired = flight.departs < currentDate %>
             <td class="<%= isExpired ? 'red' : ''%>">
 
